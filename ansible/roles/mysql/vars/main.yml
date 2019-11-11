@@ -1,0 +1,10 @@
+---
+# vars file for mysql
+mysql_collation: utf8mb4_unicode_ci
+mysql_encoding: utf8mb4
+mysql_bind_address: 0.0.0.0
+mysql_max_connections: 200
+mysql_root_password: cjstk1
+mysql_user_db_name: wordpress
+mysql_user: wordpress
+mysql_user_password: wordpress123!
