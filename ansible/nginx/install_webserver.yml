@@ -1,0 +1,12 @@
+---
+- name: install nginx on the client
+  hosts: webservers
+  become: yes
+  
+  tasks:
+      - name: install epel-release
+        action: "{{ ansible_pkg_mgr }} name=epel-release state=latest"
+      - name: install nginx web server
+        action: "{{ ansible_pkg_mgr }} name=nginx state=present"
+      - name: start nginx web server
+        service: name=nginx state=started

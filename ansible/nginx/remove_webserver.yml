@@ -1,0 +1,11 @@
+---
+- name: Remove nginx to ansible client
+  hosts: webservers
+  become: yes
+  
+  tasks:
+      - name: remove epel-release
+        action: "{{ ansible_pkg_mgr }} name=epel-release state=absent"
+        
+      - name: remove nginx
+        action: "{{ ansible_pkg_mgr }} name=nginx state=absent"
