@@ -1,0 +1,65 @@
+---
+  - name: install epel-release
+    action: "{{ ansible_pkg_mgr }} name=epel-release state=latest"
+
+  - name: install mariadb
+    action: "{{ ansible_pkg_mgr }} name=mariadb-server state=present"
+
+  - name: install python mysql support library
+    action: "{{ ansible_pkg_mgr }} name=MySQL-python state=latest"
+
+  - name: copy my.cnf file
+    template:
+        src=my.cnf.j2 dest=/etc/my.cnf mode=0600
+
+  - name: start mysql server
+    action: service name=mariadb state=started enabled=true
+
+  - name: update mysql root password
+    mysql_user:
+        login_user: root
+        login_password: "{{ mysql.root_password }}"
+        name: root
+        host: "{{ item }}"
+        password: "{{ mysql.root_password }}"
+        check_implicit_admin: yes
+        priv: "*.*:ALL,GRANT"
+    with_items:
+        - "{{ ansible_hostname }}"
+        - 127.0.0.1
+        - ::1
+        - localhost
+
+  - name: remove test db
+    mysql_db:
+        login_user: root
+        login_password: "{{ mysql.root_password }}"
+        db: test
+        state: absent
+
+  - name: create a new db
+    mysql_db:
+        login_user: root
+        login_password: "{{ mysql.root_password }}"
+        name: "{{ mysql.user_db_name }}"
+        collation: "{{ mysql.collation }}"
+        encoding: "{{ mysql.encoding }}"
+        state: present
+
+  - name: delete anonymouse user
+    mysql_user:
+        login_user: root
+        login_password: "{{ mysql.root_password }}"
+        name: ""
+        host_all: yes
+        state: absent
+
+  - name: create a new user
+    mysql_user:
+        login_user: root
+        login_password: "{{ mysql.root_password }}"
+        name: "{{ mysql.user }}"
+        password: "{{ mysql.user_password }}"
+        priv: "{{ mysql.user_db_name }}.*:ALL,GRANT"
+        host: "%"
+        state: present

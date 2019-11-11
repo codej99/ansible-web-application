@@ -1,0 +1,45 @@
+---
+  - name: add repository remi-repo
+    yum_repository:
+       name: remi
+       description: "remi repository"
+       mirrorlist: http://rpms.remirepo.net/enterprise/$releasever/remi/mirror
+       enabled: yes
+       gpgcheck: no
+       file: remi
+  - name: add repository php
+    yum_repository:
+       name: php73
+       description: php73 repo
+       file: remi
+       mirrorlist: http://rpms.remirepo.net/enterprise/$releasever/php73/mirror
+       enabled: no
+       gpgcheck: no
+  - name: install php packages
+    package:
+        name:
+           - php-cli
+           - php-curl
+           - php-common
+           - php-mysql
+           - php-gd
+           - php-fpm
+           - php-mbstring
+           - zip
+           - unzip
+        enablerepo: php73
+        state: present
+  - name: setting php-fpm
+    replace:
+       dest: "/etc/php-fpm.d/www.conf"
+       regexp: "{{ item.find }}"
+       replace: "{{ item.replace }}"
+    with_items:
+       - { find: 'user = apache', replace: 'user = nginx'}
+       - { find: 'group = apache', replace: 'group = nginx'}
+       - { find: 'listen = 127.0.0.1:9000', replace: 'listen = /var/run/php-fpm/php-fpm.sock'}
+       - { find: ';listen.owner = nobody', replace: 'listen.owner = nginx'}
+       - { find: ';listen.group = nobody', replace: 'listen.group = nginx'}
+       - { find: ';listen.mode = 0660', replace: 'listen.mode = 0660'}
+    notify:
+       - restart php

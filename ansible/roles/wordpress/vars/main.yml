@@ -1,0 +1,23 @@
+---
+# vars file for nginx
+nginx:
+    processor_count: 30
+    max_worker_connection: 512
+    log_dir: /var/log/nginx
+    access_log_name: access.log
+    port: 80
+# vars file for mysql
+mysql:
+    collation: utf8mb4_unicode_ci
+    encoding: utf8mb4
+    bind_address: 0.0.0.0
+    max_connections: 200
+    root_password: cjstk1
+    user_db_name: wordpress
+    user: wordpress
+    user_password: wordpress123!
+# vars file for wordpress
+wp:
+    downloadpath: /home/vagrant/downloads
+    filename: wordpress-latest.zip
+    installpath: /usr/share/nginx

@@ -1,0 +1,12 @@
+---
+    - hosts: wordpress
+      become: yes
+      vars_files:
+          - vars/main.yml
+      tasks:
+          - include: tasks/nginx_install.yml
+          - include: tasks/mariadb_install.yml
+          - include: tasks/php_install.yml
+          - include: tasks/wordpress_install.yml
+      handlers:
+          - include: handlers/main.yml

@@ -1,0 +1,31 @@
+---
+  - name: create download/install directory
+    file:
+       path: "{{ wp.downloadpath }}"
+       state: directory
+    with_items:
+       - "{{ wp.downloadpath }}"
+
+  - name: download latest wordpress
+    get_url:
+       url: https://wordpress.org/latest.zip
+       dest: "{{ wp.downloadpath }}/{{ wp.filename }}"
+
+  - name: extract to /usr/share/nginx
+    unarchive:
+        src: "{{ wp.downloadpath }}/{{ wp.filename }}"
+        dest: "{{ wp.installpath }}"
+        remote_src: yes
+
+  - name: copy wp-config-sample.php to wp-config.php
+    command: cp "{{ wp.installpath }}/wordpress/wp-config-sample.php" "{{ wp.installpath }}/wordpress/wp-config.php"
+
+  - name: setup wordpress database connection
+    replace:
+       dest: "{{ wp.installpath }}/wordpress/wp-config.php"
+       regexp: "{{ item.find }}"
+       replace: "{{ item.replace }}"
+    with_items:
+       - { find: 'database_name_here', replace: '{{ mysql.user_db_name }}' }
+       - { find: 'username_here', replace: '{{ mysql.user }}' }
+       - { find: 'password_here', replace: '{{ mysql.user_password }}' }
