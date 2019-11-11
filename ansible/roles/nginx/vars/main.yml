@@ -1,0 +1,8 @@
+---
+# vars file for nginx
+nginx:
+    processor_count: 30
+    max_worker_connection: 512
+    log_dir: /var/log/nginx
+    access_log_name: access.log
+    port: 80

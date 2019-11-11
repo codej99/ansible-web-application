@@ -1,0 +1,10 @@
+---
+   - hosts: webservers
+     become: yes
+     vars_files:
+        - vars/main.yml
+     tasks:
+        - include: tasks/install.yml
+
+     handlers:
+        - include: handlers/main.yml
