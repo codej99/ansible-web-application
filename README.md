@@ -1,4 +1,4 @@
-# Build web applications with ansible( nginx, mysql(mariadb), php, wordpress )
+# Build web applications with ansible
 
 ### 0. 개요
 - Ansible은 Devops도구로서 IT인프라를 쉽게 관리하기 위한 도구입니다.
