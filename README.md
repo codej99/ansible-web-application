@@ -1,3 +1,4 @@
+![ruby](https://img.shields.io/badge/ruby-latest-red?logo=ruby)
 ![ansible](https://img.shields.io/badge/ansible-latest-green?logo=ansible)
 ![vagrant](https://img.shields.io/badge/vagrant-latest-blue?logo=vagrant)
 ![virtualbox](https://img.shields.io/badge/virtualbox-latest-orange.svg?logo=virtualbox)
